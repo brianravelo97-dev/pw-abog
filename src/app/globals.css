@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy-950: #070f1f;
+  --color-navy-900: #0b1a33;
+  --color-navy-800: #112546;
+  --color-navy-700: #1a3360;
+  --color-navy-600: #284878;
+  --color-ivory: #faf7f1;
+  --color-sand: #f1ebe0;
+  --color-sand-dark: #e4dccd;
+  --color-graphite: #262a31;
+  --color-stone: #5b616c;
+  --color-gold: #b8935a;
+  --color-gold-light: #d8bf8c;
+  --color-gold-dark: #8f6f3e;
+
+  --font-serif: "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Manrope Variable", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --ease-elegant: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-ivory text-graphite font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-gold-light);
+    color: var(--color-navy-950);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility container-x {
+  @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+}
+@utility eyebrow {
+  @apply inline-flex items-center gap-3 text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-gold;
+  &::before {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 2rem;
+    background: currentColor;
+  }
+}
+@utility h-display {
+  @apply font-serif font-medium leading-[1.02] tracking-[-0.01em];
+}
+@utility btn {
+  @apply relative inline-flex items-center justify-center gap-2.5 whitespace-nowrap overflow-hidden rounded-full px-7 py-3.5 text-sm font-semibold tracking-wide transition-all duration-500 ease-elegant;
+}
+@utility btn-gold {
+  @apply btn bg-gold text-navy-950 shadow-[0_10px_30px_-12px_rgba(184,147,90,0.7)] hover:-translate-y-0.5 hover:bg-gold-light hover:shadow-[0_18px_40px_-14px_rgba(184,147,90,0.8)];
+}
+@utility btn-navy {
+  @apply btn bg-navy-900 text-ivory hover:-translate-y-0.5 hover:bg-navy-700;
+}
+@utility btn-ghost-light {
+  @apply btn border border-white/25 text-ivory hover:border-gold-light hover:text-gold-light;
+}
+@utility btn-ghost-dark {
+  @apply btn border border-navy-900/20 text-navy-900 hover:border-gold hover:text-gold-dark;
+}
+@utility gold-rule {
+  @apply h-px w-full bg-gradient-to-r from-transparent via-gold/60 to-transparent;
+}
+@utility grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+.arrow {
+  transition: transform 0.5s var(--ease-elegant);
+}
+a:hover > .arrow,
+button:hover > .arrow {
+  transform: translateX(4px);
+}
+
+/* Aparición progresiva al hacer scroll (solo con JS activo y sin reducción de movimiento) */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 1s var(--ease-elegant),
+      transform 1s var(--ease-elegant);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+.animate-rise {
+  animation: rise 1.1s var(--ease-elegant) both;
+}
+.animate-draw {
+  stroke-dasharray: 2400;
+  stroke-dashoffset: 2400;
+  animation: draw 4s var(--ease-elegant) 0.3s forwards;
+}
+.pulse-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: #25d366;
+  animation: pulse-ring 2.4s ease-out infinite;
+  z-index: -1;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
